@@ -25,10 +25,11 @@
                 });
             }
 
-            function SIGNAL(){
+            function SIGNAL(recipient, value){
                 return JSON.stringify({
-                    type: 'join',
-                    value: room 
+                    type:'signal', 
+                    recipient:recipient, 
+                    value: value,
                 });
             }
 
