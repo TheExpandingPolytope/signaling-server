@@ -21,12 +21,12 @@ function USER_JOIN(id){
 
 function USER_LEAVE(){
     return JSON.stringify({
-        type: 'user_join',
+        type: 'user_leave',
         from: id 
     });
 }
 
-function SIGNAL(id, value){
+function USER_SIGNAL(id, value){
     return JSON.stringify({
         type: 'signal',
         from : id,
@@ -40,11 +40,13 @@ wss.on('connection', function connection(ws) {
         
         var message = JSON.parse(data);
 
+        console.log(message);
+        
         switch (message.type) {
             case 'init':
                 
                 if(!message.value){
-                    ws.send(ERROR('Room not specified'));
+                    ws.send(ERROR('Identifier not included'));
                     break;
                 }
 
@@ -106,7 +108,7 @@ wss.on('connection', function connection(ws) {
 
             case 'signal':
 
-                if(!message.value){
+                if(!message.recipient){
                     ws.send(ERROR('Recipient not specified'));
                     break;
                 }
@@ -121,12 +123,12 @@ wss.on('connection', function connection(ws) {
                     break;
                 }
 
-                if(!rooms[ws.roomId][message.value]){
+                if(!rooms[ws.roomId][message.recipient]){
                     ws.send(ERROR('Recipient does not exist in room'));
                     break;
                 }
 
-                rooms[ws.roomId][message.value].send(SIGNAL(ws.id, message.value))
+                rooms[ws.roomId][message.recipient].send(USER_SIGNAL(ws.id, message.value))
 
                 
                 break;
@@ -134,7 +136,7 @@ wss.on('connection', function connection(ws) {
             default:
 
                 ws.send(ERROR('Specify init, join, leave or signal as type'));
-                
+
                 break;
         }
         

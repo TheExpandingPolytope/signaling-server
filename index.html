@@ -3,7 +3,38 @@
     </head>
     <body>
         <script>
-            var ws = new WebSocket('ws://198.211.109.66');
+            //set your client identifier
+            function INIT(id){
+                return JSON.stringify({
+                    type: 'init',
+                    value: id 
+                });
+            }
+
+            //join room
+            function JOIN(room){
+                return JSON.stringify({
+                    type: 'join',
+                    value: room 
+                });
+            }
+
+            function LEAVE(){
+                return JSON.stringify({
+                    type: 'leave',
+                });
+            }
+
+            function SIGNAL(){
+                return JSON.stringify({
+                    type: 'join',
+                    value: room 
+                });
+            }
+
+            //var ws = new WebSocket('ws://198.211.109.66');
+            var ws = new WebSocket('ws://localhost:8080');
+
             ws.onopen = () => {
                 console.log('open');
 
@@ -15,15 +46,6 @@
                     console.log('close');
                 }
 
-                ws.send(JSON.stringify({
-                    type: 'room',
-                    data: 'test',
-                }));
-
-                ws.send(JSON.stringify({
-                    type: 'signal',
-                    data: 'message to everyone in test room',
-                }));
             }
 
             ws.onerror = (event) => {
