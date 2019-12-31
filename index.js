@@ -19,7 +19,7 @@ function USER_JOIN(id){
     });
 }
 
-function USER_LEAVE(){
+function USER_LEAVE(id){
     return JSON.stringify({
         type: 'user_leave',
         from: id 
