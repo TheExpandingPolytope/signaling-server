@@ -33,6 +33,12 @@
                 });
             }
 
+            function PING(){
+                return JSON.stringify({
+                    type:'ping'
+                })
+            }
+
             //var ws = new WebSocket('ws://198.211.109.66');
             var ws = new WebSocket('ws://localhost:8080');
 

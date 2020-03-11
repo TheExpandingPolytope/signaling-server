@@ -34,6 +34,12 @@ function USER_SIGNAL(id, value){
     });
 }
 
+function USER_PING(){
+    return JSON.stringify({
+        type: 'ping'
+    })
+}
+
 wss.on('connection', function connection(ws) {
 
     ws.on('message', function incoming(data) {
@@ -131,6 +137,10 @@ wss.on('connection', function connection(ws) {
                 rooms[ws.roomId][message.recipient].send(USER_SIGNAL(ws.id, message.value))
 
                 
+                break;
+
+            case 'ping':
+                ws.send(USER_PING());
                 break;
 
             default:
